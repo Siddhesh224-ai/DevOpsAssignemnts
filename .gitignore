@@ -1,4 +1,5 @@
-.homework-tools/
+**/.homework-tools/
+**/.idea/
 ./node_modules/
 .zip
 **/__pycache__/
