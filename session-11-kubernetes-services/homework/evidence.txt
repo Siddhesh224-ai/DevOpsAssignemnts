@@ -1,0 +1,121 @@
+SESSION 11 - KUBERNETES SERVICES
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:09:41 IST
+
+deployment.apps/web-app-clusterip created
+pod/curl-client created
+service/web-service-clusterip created
+deployment.apps/web-app-nodeport created
+service/web-service-nodeport created
+deployment.apps/web-app-loadbalancer created
+service/web-service-loadbalancer created
+pod/dns-test-client created
+service/external-database-service created
+statefulset.apps/web-stateful created
+pod/headless-dns-client created
+service/web-service-headless created
+deployment.apps/web-app-clusterip condition met
+deployment.apps/web-app-loadbalancer condition met
+deployment.apps/web-app-nodeport condition met
+pod/curl-client condition met
+pod/dns-test-client condition met
+pod/headless-dns-client condition met
+pod/web-app-clusterip-66865d4855-dcg99 condition met
+pod/web-app-clusterip-66865d4855-pvlsb condition met
+pod/web-app-clusterip-66865d4855-wsjt7 condition met
+pod/web-app-loadbalancer-5db87c7b9-4h4vh condition met
+pod/web-app-loadbalancer-5db87c7b9-gdmq8 condition met
+pod/web-app-loadbalancer-5db87c7b9-tqw4f condition met
+pod/web-app-nodeport-6c8f48bd-nlbsq condition met
+pod/web-app-nodeport-6c8f48bd-r95pz condition met
+pod/web-stateful-0 condition met
+pod/web-stateful-1 condition met
+NAME                        TYPE           CLUSTER-IP      EXTERNAL-IP        PORT(S)        AGE   SELECTOR
+external-database-service   ExternalName   <none>          nencyravaliya.me   <none>         11s   <none>
+web-service-clusterip       ClusterIP      10.99.18.21     <none>             8080/TCP       12s   app=web-clusterip
+web-service-headless        ClusterIP      None            <none>             80/TCP         11s   app=web-headless
+web-service-loadbalancer    LoadBalancer   10.105.86.245   <pending>          80:32587/TCP   11s   app=web-loadbalancer
+web-service-nodeport        NodePort       10.109.105.62   <none>             80:30080/TCP   12s   app=web-nodeport
+NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web-app-clusterip      3/3     3            3           12s   nginx-web    nginx:1.25-alpine   app=web-clusterip
+deployment.apps/web-app-loadbalancer   3/3     3            3           11s   web-server   nginx:1.25-alpine   app=web-loadbalancer
+deployment.apps/web-app-nodeport       2/2     2            2           12s   web-server   nginx:1.25-alpine   app=web-nodeport
+
+NAME                            READY   AGE   CONTAINERS       IMAGES
+statefulset.apps/web-stateful   3/3     11s   nginx-stateful   nginx:1.25-alpine
+
+NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/curl-client                            1/1     Running   0          12s   10.244.0.74   minikube   <none>           <none>
+pod/dns-test-client                        1/1     Running   0          11s   10.244.0.81   minikube   <none>           <none>
+pod/headless-dns-client                    1/1     Running   0          11s   10.244.0.84   minikube   <none>           <none>
+pod/web-app-clusterip-66865d4855-dcg99     1/1     Running   0          12s   10.244.0.75   minikube   <none>           <none>
+pod/web-app-clusterip-66865d4855-pvlsb     1/1     Running   0          12s   10.244.0.77   minikube   <none>           <none>
+pod/web-app-clusterip-66865d4855-wsjt7     1/1     Running   0          12s   10.244.0.76   minikube   <none>           <none>
+pod/web-app-loadbalancer-5db87c7b9-4h4vh   1/1     Running   0          11s   10.244.0.82   minikube   <none>           <none>
+pod/web-app-loadbalancer-5db87c7b9-gdmq8   1/1     Running   0          11s   10.244.0.83   minikube   <none>           <none>
+pod/web-app-loadbalancer-5db87c7b9-tqw4f   1/1     Running   0          11s   10.244.0.80   minikube   <none>           <none>
+pod/web-app-nodeport-6c8f48bd-nlbsq        1/1     Running   0          12s   10.244.0.78   minikube   <none>           <none>
+pod/web-app-nodeport-6c8f48bd-r95pz        1/1     Running   0          12s   10.244.0.79   minikube   <none>           <none>
+pod/web-stateful-0                         1/1     Running   0          11s   10.244.0.85   minikube   <none>           <none>
+pod/web-stateful-1                         1/1     Running   0          9s    10.244.0.86   minikube   <none>           <none>
+pod/web-stateful-2                         1/1     Running   0          9s    10.244.0.87   minikube   <none>           <none>
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                                 ENDPOINTS                                      AGE
+endpoints/web-service-clusterip      10.244.0.75:80,10.244.0.76:80,10.244.0.77:80   12s
+endpoints/web-service-headless       10.244.0.85:80,10.244.0.86:80,10.244.0.87:80   11s
+endpoints/web-service-loadbalancer   10.244.0.80:80,10.244.0.82:80,10.244.0.83:80   11s
+endpoints/web-service-nodeport       10.244.0.78:80,10.244.0.79:80                  12s
+
+NAME                                                            ADDRESSTYPE   PORTS   ENDPOINTS                             AGE
+endpointslice.discovery.k8s.io/web-service-clusterip-j7qv8      IPv4          80      10.244.0.75,10.244.0.77,10.244.0.76   12s
+endpointslice.discovery.k8s.io/web-service-headless-zqcxs       IPv4          80      10.244.0.85,10.244.0.86,10.244.0.87   11s
+endpointslice.discovery.k8s.io/web-service-loadbalancer-mkzkd   IPv4          80      10.244.0.82,10.244.0.83,10.244.0.80   11s
+endpointslice.discovery.k8s.io/web-service-nodeport-q9mtc       IPv4          80      10.244.0.79,10.244.0.78               12s
+
+[ClusterIP connectivity]
+clusterip-service
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+nodeport-service
+loadbalancer-service
+pod "s11-client" deleted from homework-s11 namespace
+
+[Kubernetes DNS and FQDN]
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/s11-dns, falling back to streaming logs: unable to upgrade connection: container s11-dns not found in pod s11-dns_homework-s11
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+pod "s11-dns" deleted from homework-s11 namespace
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+coredns   1/1     1            1           28d
+.:53 {
+    log
+    errors
+    health {
+       lameduck 5s
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+       pods insecure
+       fallthrough in-addr.arpa ip6.arpa
+       ttl 30
+    }
+    prometheus :9153
+    hosts {
+       192.168.65.254 host.minikube.internal
+       fallthrough
+    }
+    forward . /etc/resolv.conf {

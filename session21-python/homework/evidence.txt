@@ -1,0 +1,339 @@
+SESSION 21 - TASKBOARD APPLICATION ASSIGNMENT
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:35:29 IST
+
+Scope: TaskBoard assignment only; no separate capstone/final project added.
+
+[Backend tests - SQLite test database]
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-8.3.4, pluggy-1.6.0 -- /usr/local/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /work
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collecting ... collected 7 items
+
+tests/test_api.py::test_health PASSED                                    [ 14%]
+tests/test_api.py::test_root PASSED                                      [ 28%]
+tests/test_api.py::test_create_task_validation PASSED                    [ 42%]
+tests/test_api.py::test_list_and_get_task PASSED                         [ 57%]
+tests/test_api.py::test_update_task PASSED                               [ 71%]
+tests/test_api.py::test_task_stats PASSED                                [ 85%]
+tests/test_api.py::test_delete_task PASSED                               [100%]
+
+=============================== warnings summary ===============================
+../usr/local/lib/python3.12/site-packages/starlette/testclient.py:40
+  /usr/local/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+app/main.py:16
+  /work/app/main.py:16: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+../usr/local/lib/python3.12/site-packages/fastapi/applications.py:4495
+  /usr/local/lib/python3.12/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 7 passed, 3 warnings in 0.42s =========================
+
+[Frontend production build]
+
+> taskboard-frontend@1.0.0 build
+> vite build
+
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 15 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.34 kB │ gzip:  0.25 kB
+dist/assets/index-DkMuKOF6.css    6.40 kB │ gzip:  2.04 kB
+dist/assets/index-D65SfUwa.js   227.29 kB │ gzip: 70.88 kB
+
+✓ built in 204ms
+
+[Docker Compose build and application health]
+ Image session21-python-backend Building 
+ Image session21-python-frontend Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.13kB done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 309B done
+#2 DONE 0.0s
+
+#3 [backend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 416B done
+#3 DONE 0.0s
+
+#4 [backend internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.0s
+
+#5 [frontend internal] load metadata for docker.io/library/node:22-alpine
+#5 DONE 0.0s
+
+#6 [backend internal] load .dockerignore
+#6 transferring context: 95B done
+#6 DONE 0.0s
+
+#7 [backend internal] load build context
+#7 transferring context: 1.24kB done
+#7 DONE 0.0s
+
+#8 [backend 1/7] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#8 resolve docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f 0.0s done
+#8 DONE 0.0s
+
+#9 [backend 2/7] WORKDIR /app
+#9 CACHED
+
+#10 [backend 5/7] COPY alembic.ini ./
+#10 CACHED
+
+#11 [backend 3/7] COPY requirements.txt .
+#11 CACHED
+
+#12 [backend 6/7] COPY alembic ./alembic
+#12 CACHED
+
+#13 [backend 4/7] RUN pip install --no-cache-dir -r requirements.txt && useradd --create-home --uid 10001 appuser
+#13 CACHED
+
+#14 [backend 7/7] COPY app ./app
+#14 CACHED
+
+#15 [backend] exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:cdfd268d582a2165f0b04f6b2bd7867cf848eaef077b28f3a8431da68fd35ef7 done
+#15 exporting config sha256:37db9e24e8919b241dfc117bff15e6025e03eb6b4449e46228e73bf19c7a5561 done
+#15 exporting attestation manifest sha256:b9797f67fa6c75de87195861b10b5a74f8d22bcc6260f30fe5130b032fa30fe6 0.0s done
+#15 exporting manifest list sha256:0f1da42d8d1d764b8a2719cd41ecae9f79fa971547629877e1ddc47a28c8695a
+#15 exporting manifest list sha256:0f1da42d8d1d764b8a2719cd41ecae9f79fa971547629877e1ddc47a28c8695a done
+#15 naming to docker.io/library/session21-python-backend:latest done
+#15 unpacking to docker.io/library/session21-python-backend:latest done
+#15 DONE 0.1s
+
+#16 [backend] resolving provenance for metadata file
+#16 DONE 0.0s
+
+#17 [frontend internal] load metadata for docker.io/nginxinc/nginx-unprivileged:1.27-alpine
+#17 DONE 1.0s
+
+#18 [frontend internal] load .dockerignore
+#18 transferring context: 63B done
+#18 DONE 0.0s
+
+#19 [frontend internal] load build context
+#19 transferring context: 26.64kB done
+#19 DONE 0.0s
+
+#20 [frontend build 1/6] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#20 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 0.0s done
+#20 DONE 0.0s
+
+#21 [frontend stage-1 1/3] FROM docker.io/nginxinc/nginx-unprivileged:1.27-alpine@sha256:65e3e85dbaed8ba248841d9d58a899b6197106c23cb0ff1a132b7bfe0547e4c0
+#21 resolve docker.io/nginxinc/nginx-unprivileged:1.27-alpine@sha256:65e3e85dbaed8ba248841d9d58a899b6197106c23cb0ff1a132b7bfe0547e4c0 0.0s done
+#21 DONE 0.0s
+
+#22 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#22 CACHED
+
+#23 [frontend build 6/6] RUN npm run build
+#23 CACHED
+
+#24 [frontend build 3/6] COPY package*.json ./
+#24 CACHED
+
+#25 [frontend build 5/6] COPY . .
+#25 CACHED
+
+#26 [frontend build 2/6] WORKDIR /app
+#26 CACHED
+
+#27 [frontend build 4/6] RUN npm install
+#27 CACHED
+
+#28 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#28 CACHED
+
+#29 [frontend] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:6e9843475234b3755ab5b620819755940718ff07e76d84bda4b23d3829862898 done
+#29 exporting config sha256:19f857a3430ca3e14999aeb61b8e27b22224b02dd110de905f777086663ac742 done
+#29 exporting attestation manifest sha256:6f80affdb8ed042954a49885dc89d95ef3cd8ebcc03dd74d3a991307ac3b9463 0.0s done
+#29 exporting manifest list sha256:b76cad80271fddc27e799330fe16f824b5dc599892cde7bce7280bb991471683 done
+#29 naming to docker.io/library/session21-python-frontend:latest done
+#29 unpacking to docker.io/library/session21-python-frontend:latest done
+#29 DONE 0.1s
+
+#30 [frontend] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image session21-python-backend Built 
+ Image session21-python-frontend Built 
+ Network session21-python_default Creating 
+ Network session21-python_default Created 
+ Container session21-python-postgres-1 Creating 
+ Container session21-python-postgres-1 Created 
+ Container session21-python-backend-1 Creating 
+ Container session21-python-backend-1 Created 
+ Container session21-python-frontend-1 Creating 
+ Container session21-python-frontend-1 Created 
+ Container session21-python-postgres-1 Starting 
+ Container session21-python-postgres-1 Started 
+ Container session21-python-postgres-1 Waiting 
+ Container session21-python-postgres-1 Healthy 
+ Container session21-python-backend-1 Starting 
+ Container session21-python-backend-1 Started 
+ Container session21-python-frontend-1 Starting 
+ Container session21-python-frontend-1 Started 
+curl: (56) Recv failure: Connection reset by peer
+NAME                          IMAGE                       COMMAND                  SERVICE    CREATED         STATUS                   PORTS
+session21-python-backend-1    session21-python-backend    "sh -c 'alembic upgr…"   backend    6 seconds ago   Up 2 seconds             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+session21-python-frontend-1   session21-python-frontend   "/docker-entrypoint.…"   frontend   6 seconds ago   Up 2 seconds             0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp
+session21-python-postgres-1   postgres:16-alpine          "docker-entrypoint.s…"   postgres   6 seconds ago   Up 5 seconds (healthy)   5432/tcp
+Health: {"status":"UP"}
+Readiness: {"status":"READY"}
+Tasks API: []
+Metrics sample: http_requests_total{handler="/health",method="GET",status="2xx"} 2.0
+
+Frontend title: <title>TaskBoard
+
+Image=session21-python-backend:latest User=10001
+Image=session21-python-frontend:latest User=101
+
+[Helm lint and render]
+==> Linting /Users/sid/Desktop/Code/DevOpsAssignments/session21-python/helm/taskboard
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+   3 kind: Deployment
+   1 kind: HorizontalPodAutoscaler
+   1 kind: Ingress
+   1 kind: PersistentVolumeClaim
+   1 kind: Secret
+   3 kind: Service
+
+[Terraform VPC/EKS validation]
+[0m[1mInitializing modules...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Reusing previous version of hashicorp/tls from the dependency lock file
+- Reusing previous version of hashicorp/time from the dependency lock file
+- Reusing previous version of hashicorp/null from the dependency lock file
+- Reusing previous version of hashicorp/cloudinit from the dependency lock file
+- Using previously-installed hashicorp/aws v5.100.0
+- Using previously-installed hashicorp/tls v4.4.1
+- Using previously-installed hashicorp/time v0.14.2
+- Using previously-installed hashicorp/null v3.3.2
+- Using previously-installed hashicorp/cloudinit v2.4.1
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+
+Providers required by configuration:
+.
+├── provider[registry.terraform.io/hashicorp/aws] ~> 5.0
+├── module.eks
+│   ├── provider[registry.terraform.io/hashicorp/tls] >= 3.0.0
+│   ├── provider[registry.terraform.io/hashicorp/time] >= 0.9.0
+│   ├── provider[registry.terraform.io/hashicorp/aws] >= 5.95.0, < 6.0.0
+│   ├── module.fargate_profile
+│   │   └── provider[registry.terraform.io/hashicorp/aws] >= 5.95.0, < 6.0.0
+│   ├── module.kms
+│   │   └── provider[registry.terraform.io/hashicorp/aws] >= 4.33.0
+│   ├── module.eks_managed_node_group
+│   │   ├── provider[registry.terraform.io/hashicorp/aws] >= 5.95.0, < 6.0.0
+│   │   └── module.user_data
+│   │       ├── provider[registry.terraform.io/hashicorp/cloudinit] >= 2.0.0
+│   │       └── provider[registry.terraform.io/hashicorp/null] >= 3.0.0
+│   └── module.self_managed_node_group
+│       ├── provider[registry.terraform.io/hashicorp/aws] >= 5.95.0, < 6.0.0
+│       └── module.user_data
+│           ├── provider[registry.terraform.io/hashicorp/cloudinit] >= 2.0.0
+│           └── provider[registry.terraform.io/hashicorp/null] >= 3.0.0
+└── module.vpc
+    └── provider[registry.terraform.io/hashicorp/aws] >= 5.30.0
+
+AWS plan/apply status: NOT RUN - no AWS credentials/profile configured.
+
+[Local Minikube Helm deployment]
+namespace/taskboard created
+Release "taskboard" does not exist. Installing it now.
+NAME: taskboard
+LAST DEPLOYED: Wed Oct  7 15:36:05 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/taskboard-frontend            2/2     2            2           27s
+deployment.apps/taskboard-postgres            1/1     1            1           27s
+deployment.apps/taskboard-taskboard-backend   2/2     2            2           27s
+
+NAME                                              READY   STATUS    RESTARTS      AGE
+pod/taskboard-frontend-7f6988697d-qxsgk           1/1     Running   0             27s
+pod/taskboard-frontend-7f6988697d-x4tjp           1/1     Running   0             27s
+pod/taskboard-postgres-755b4497b-b4xhk            1/1     Running   0             27s
+pod/taskboard-taskboard-backend-9bf6ff95d-ts8s9   1/1     Running   2 (22s ago)   27s
+pod/taskboard-taskboard-backend-9bf6ff95d-vxl4n   1/1     Running   2 (22s ago)   27s
+
+NAME                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/backend              ClusterIP   10.102.222.131   <none>        8000/TCP   27s
+service/taskboard-frontend   ClusterIP   10.96.43.53      <none>        80/TCP     27s
+service/taskboard-postgres   ClusterIP   10.105.110.116   <none>        5432/TCP   27s
+
+NAME                                  CLASS   HOSTS             ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/taskboard   nginx   taskboard.local   192.168.49.2   80      27s
+
+NAME                                                    REFERENCE                                TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: <unknown>/60%   2         6         2          27s
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/taskboard-postgres-data   Bound    pvc-38c4d603-f119-4912-a8f7-062e13863105   5Gi        RWO            standard       <unset>                 27s
+NAME     	NAMESPACE	REVISION	UPDATED                            	STATUS  	CHART          	APP VERSION
+taskboard	taskboard	1       	2026-10-07 15:36:05.89481 +0530 IST	deployed	taskboard-1.0.0	1.0.0      
+deployment "taskboard-taskboard-backend" successfully rolled out
+{"status":"UP"}
+release "taskboard" uninstalled
+namespace "taskboard" deleted
+ Container session21-python-frontend-1 Stopping 
+ Container session21-python-frontend-1 Stopped 
+ Container session21-python-frontend-1 Removing 
+ Container session21-python-frontend-1 Removed 
+ Container session21-python-backend-1 Stopping 
+ Container session21-python-backend-1 Stopped 
+ Container session21-python-backend-1 Removing 
+ Container session21-python-backend-1 Removed 
+ Container session21-python-postgres-1 Stopping 
+ Container session21-python-postgres-1 Stopped 
+ Container session21-python-postgres-1 Removing 
+ Container session21-python-postgres-1 Removed 
+ Network session21-python_default Removing 
+ Network session21-python_default Removed 

@@ -1,5 +1,9 @@
 name: Python DevSecOps Pipeline
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/session17-devsecops
+
 # When does this pipeline run?
 on:
   push:
@@ -92,9 +96,24 @@ jobs:
         run: |
           pip-audit
 
+  # ========================================
+  # STEP 4 — Secret scanning
+  # ========================================
+
+  secret-scan:
+    name: Secret Scan - Gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   # ========================================
-  # STEP 4 — Build Docker Image
+  # STEP 5 — Build Docker Image
   #          (only runs after steps 1, 2, 3 pass)
   # ========================================
 
@@ -104,6 +123,7 @@ jobs:
       - test
       - sast
       - sca
+      - secret-scan
     runs-on: ubuntu-latest
 
     steps:
@@ -117,7 +137,7 @@ jobs:
 
 
   # ========================================
-  # STEP 5 — Scan Docker Image for vulnerabilities
+  # STEP 6 — Scan Docker Image for vulnerabilities
   # ========================================
 
   image-scan:
@@ -146,45 +166,47 @@ jobs:
 
       - name: Scan image
         run: |
-          trivy image --severity HIGH,CRITICAL session17-python:${{ github.sha }}
+          trivy image --exit-code 1 --ignore-unfixed --severity HIGH,CRITICAL session17-python:${{ github.sha }}
 
 
   # ========================================
-  # STEP 6 — Push image to Docker Hub
+  # STEP 7 — Push image to GHCR
   # ========================================
 
   push:
-    name: Push Image to Docker Hub
+    name: Push Image to GHCR
     needs:
       - image-scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
 
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
-          username: nensiravaliya28
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and tag image
         run: |
           docker build \
-            -t nensiravaliya28/hey-cicd:${{ github.sha }} \
-            -t nensiravaliya28/hey-cicd:latest \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             .
 
       - name: Push image
         run: |
-          docker push nensiravaliya28/hey-cicd:${{ github.sha }}
-          docker push nensiravaliya28/hey-cicd:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
 
   # ========================================
-  # STEP 7 — Deploy to Kubernetes
+  # STEP 8 — Deploy to Kubernetes
   #          (only runs on push to main)
   # ========================================
 
@@ -208,7 +230,7 @@ jobs:
       - name: Update deployment with new image tag
         run: |
           # Replace '__IMAGE_TAG__' placeholder with the specific git sha we just pushed
-          sed -i "s|__IMAGE_TAG__|${{ github.sha }}|g" k8s/deployment.yaml
+          sed -i "s|nensiravaliya28/hey-cicd:__IMAGE_TAG__|${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" k8s/deployment.yaml
 
       - name: Deploy to Kubernetes
         run: |

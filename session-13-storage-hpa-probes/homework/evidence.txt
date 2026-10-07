@@ -1,0 +1,115 @@
+SESSION 13 - STORAGE, HPA, AND PROBES
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:36:42 IST
+
+pod/emptydir-demo created
+persistentvolume/student-pv unchanged
+persistentvolumeclaim/student-pvc created
+pod/storage-demo created
+deployment.apps/hpa-demo created
+service/hpa-demo-service created
+horizontalpodautoscaler.autoscaling/hpa-demo created
+Waiting for deployment "hpa-demo" rollout to finish: 0 of 1 updated replicas are available...
+deployment "hpa-demo" successfully rolled out
+deployment.apps/metrics-server condition met
+NAME                            READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pod/emptydir-demo               1/1     Running   0          26s   10.244.0.163   minikube   <none>           <none>
+pod/hpa-demo-5d6676989b-4gddt   1/1     Running   0          25s   10.244.0.165   minikube   <none>           <none>
+pod/storage-demo                1/1     Running   0          25s   10.244.0.164   minikube   <none>           <none>
+
+NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+persistentvolumeclaim/student-pvc   Bound    pvc-610812cd-92b8-4615-b2e4-b7de9a448811   500Mi      RWO            standard       <unset>                 25s   Filesystem
+
+NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                      STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE   VOLUMEMODE
+persistentvolume/pvc-610812cd-92b8-4615-b2e4-b7de9a448811   500Mi      RWO            Delete           Bound       homework-s13/student-pvc   standard       <unset>                          25s   Filesystem
+persistentvolume/student-pv                                 1Gi        RWO            Retain           Available                                             <unset>                          26m   Filesystem
+NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  28d
+NAME       REFERENCE             TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+hpa-demo   Deployment/hpa-demo   cpu: <unknown>/50%   1         5         1          26s
+error: metrics not available yet
+Name:                                                  hpa-demo
+Namespace:                                             homework-s13
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Wed, 07 Oct 2026 15:36:43 +0530
+Reference:                                             Deployment/hpa-demo
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  <unknown> / 50%
+Min replicas:                                          1
+Max replicas:                                          5
+Deployment pods:                                       1 current / 0 desired
+Conditions:
+  Type           Status  Reason                   Message
+  ----           ------  ------                   -------
+  AbleToScale    True    SucceededGetScale        the HPA controller was able to get the target's current scale
+  ScalingActive  False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+Events:
+  Type     Reason                        Age                From                       Message
+  ----     ------                        ----               ----                       -------
+  Warning  FailedGetResourceMetric       11s (x2 over 26s)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Warning  FailedComputeMetricsReplicas  11s (x2 over 26s)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+
+[HPA load generation and scaling]
+pod/hpa-load-1 created
+pod/hpa-load-2 created
+pod/hpa-load-3 created
+NAME                                           REFERENCE             TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/hpa-demo   Deployment/hpa-demo   cpu: <unknown>/50%   1         5         1          116s
+
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/emptydir-demo               1/1     Running   0          117s
+pod/hpa-demo-5d6676989b-4gddt   1/1     Running   0          116s
+pod/hpa-load-1                  1/1     Running   0          90s
+pod/hpa-load-2                  1/1     Running   0          90s
+pod/hpa-load-3                  1/1     Running   0          90s
+pod/storage-demo                1/1     Running   0          116s
+NAME                        CPU(cores)   MEMORY(bytes)   
+emptydir-demo               0m           9Mi             
+hpa-demo-5d6676989b-4gddt   120m         9Mi             
+hpa-load-1                  404m         2Mi             
+hpa-load-2                  405m         2Mi             
+hpa-load-3                  404m         2Mi             
+storage-demo                0m           8Mi             
+
+[Probe manifests]
+pod/liveness-demo created
+pod/readiness-demo created
+pod/startup-demo created
+NAME                        READY   STATUS    RESTARTS   AGE
+emptydir-demo               1/1     Running   0          2m5s
+hpa-demo-5d6676989b-4gddt   1/1     Running   0          2m4s
+hpa-demo-5d6676989b-hjdmc   1/1     Running   0          4s
+hpa-demo-5d6676989b-pwlnn   1/1     Running   0          4s
+hpa-load-1                  1/1     Running   0          98s
+hpa-load-2                  1/1     Running   0          98s
+hpa-load-3                  1/1     Running   0          98s
+liveness-demo               1/1     Running   0          8s
+readiness-demo              1/1     Running   0          8s
+startup-demo                1/1     Running   0          8s
+storage-demo                1/1     Running   0          2m4s
+
+[Mini-project validation]
+namespace/production-webapp created
+persistentvolumeclaim/web-data created
+deployment.apps/web-app created
+service/web-service created
+horizontalpodautoscaler.autoscaling/web-app-hpa created
+Waiting for deployment "web-app" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web-app   2/2     2            2           9s
+
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-d45775485-4ldkb   1/1     Running   0          9s
+pod/web-app-d45775485-kll5v   1/1     Running   0          9s
+
+NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/web-service   ClusterIP   10.111.65.146   <none>        80/TCP    9s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-0c6b3472-7afc-4f04-9fb3-fbf335955d92   500Mi      RWO            standard       <unset>                 9s
+
+NAME                                              REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          9s

@@ -1,0 +1,134 @@
+SESSION 15 - HELM LIFECYCLE AND ROLLBACK
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:11:03 IST
+
+v4.2.4+g3900f43
+==> Linting /Users/sid/Desktop/Code/DevOpsAssignments/session-15-helm/mini-project/notes-chart
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+---
+# Source: notes-chart/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notes-config
+data:
+  APP_NAME: "notes-app"
+  ENVIRONMENT: "development"
+
+---
+# Source: notes-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-svc
+spec:
+  type: NodePort
+  selector:
+    app: notes
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30090
+Release "notes" does not exist. Installing it now.
+NAME: notes
+LAST DEPLOYED: Wed Oct  7 15:11:05 2026
+NAMESPACE: homework-s15
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NAME 	NAMESPACE   	REVISION	UPDATED                             	STATUS  	CHART            	APP VERSION
+notes	homework-s15	1       	2026-10-07 15:11:05.718065 +0530 IST	deployed	notes-chart-0.1.0	1.0        
+NAME: notes
+LAST DEPLOYED: Wed Oct  7 15:11:05 2026
+NAMESPACE: homework-s15
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+RESOURCES:
+==> v1/ConfigMap
+NAME           DATA   AGE
+notes-config   2      11s
+
+==> v1/Service
+NAME        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+notes-svc   NodePort   10.110.103.55   <none>        80:30090/TCP   11s
+
+==> v1/Deployment
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+notes-deploy   1/1     1            1           11s
+USER-SUPPLIED VALUES:
+null
+Release "notes" has been upgraded. Happy Helming!
+NAME: notes
+LAST DEPLOYED: Wed Oct  7 15:11:16 2026
+NAMESPACE: homework-s15
+STATUS: deployed
+REVISION: 2
+DESCRIPTION: Upgrade complete
+TEST SUITE: None
+Release "notes" has been upgraded. Happy Helming!
+NAME: notes
+LAST DEPLOYED: Wed Oct  7 15:11:28 2026
+NAMESPACE: homework-s15
+STATUS: deployed
+REVISION: 3
+DESCRIPTION: Upgrade complete
+TEST SUITE: None
+REVISION	UPDATED                 	STATUS    	CHART            	APP VERSION	DESCRIPTION     
+1       	Wed Oct  7 15:11:05 2026	superseded	notes-chart-0.1.0	1.0        	Install complete
+2       	Wed Oct  7 15:11:16 2026	superseded	notes-chart-0.1.0	1.0        	Upgrade complete
+3       	Wed Oct  7 15:11:28 2026	deployed  	notes-chart-0.1.0	1.0        	Upgrade complete
+Rollback was a success! Happy Helming!
+[After rollback]
+REVISION	UPDATED                 	STATUS    	CHART            	APP VERSION	DESCRIPTION     
+1       	Wed Oct  7 15:11:05 2026	superseded	notes-chart-0.1.0	1.0        	Install complete
+2       	Wed Oct  7 15:11:16 2026	superseded	notes-chart-0.1.0	1.0        	Upgrade complete
+3       	Wed Oct  7 15:11:28 2026	superseded	notes-chart-0.1.0	1.0        	Upgrade complete
+4       	Wed Oct  7 15:11:41 2026	deployed  	notes-chart-0.1.0	1.0        	Rollback to 2   
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/notes-deploy   3/3     3            3           38s
+
+NAME                                READY   STATUS      RESTARTS   AGE
+pod/notes-deploy-54f799c6f6-4br6g   1/1     Running     0          1s
+pod/notes-deploy-54f799c6f6-bjx5n   1/1     Running     0          2s
+pod/notes-deploy-54f799c6f6-hltw4   1/1     Running     0          2s
+pod/notes-deploy-f8c4f95f7-gvgs8    0/1     Completed   0          15s
+pod/notes-deploy-f8c4f95f7-m88jb    0/1     Completed   0          2s
+pod/notes-deploy-f8c4f95f7-zsbbd    0/1     Completed   0          4s
+
+NAME                TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/notes-svc   NodePort   10.110.103.55   <none>        80:30090/TCP   38s
+
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      40s
+configmap/notes-config       2      38s
+---
+# Source: notes-chart/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notes-config
+data:
+  APP_NAME: "notes-app"
+  ENVIRONMENT: "production"
+
+---
+# Source: notes-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-svc
+spec:
+  type: NodePort
+no repositories to show
+URL                                               	CHART VERSION  	APP VERSION                                     	DESCRIPTION                                       
+https://artifacthub.io/packages/helm/cloudpirat...	0.16.12        	1.31.6                                          	Nginx is a high-performance HTTP server and rev...
+https://artifacthub.io/packages/helm/quench-ngi...	0.0.15         	1.30.5                                          	High-performance web server, reverse proxy, and...
+https://artifacthub.io/packages/helm/krakazyabr...	1.0.0          	1.19.0                                          	Nginx Helm chart for Kubernetes                   
+https://artifacthub.io/packages/helm/dhinesh/nginx	25.2.1         	1.31.6                                          	NGINX Open Source is a web server that can be a...
+https://artifacthub.io/packages/helm/bitnami/nginx	25.2.1         	1.31.6                                          	NGINX Open Source is a web server that can be a...
+release "notes" uninstalled
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION

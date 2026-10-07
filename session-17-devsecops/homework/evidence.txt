@@ -1,0 +1,159 @@
+SESSION 17 - LOCAL DEVSECOPS QUALITY GATE
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:18:21 IST
+
+[Unit tests and coverage]
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-8.4.2, pluggy-1.6.0
+rootdir: /work
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.0.0
+collected 8 items
+
+tests/test_app.py ........                                               [100%]
+
+=============================== warnings summary ===============================
+app/app.py:13
+  /work/app/app.py:13: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    _start_time = datetime.datetime.utcnow()
+
+tests/test_app.py::test_health
+  /work/app/app.py:38: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    uptime_seconds = (datetime.datetime.utcnow() - _start_time).total_seconds()
+
+tests/test_app.py::test_health
+  /work/app/app.py:42: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+
+tests/test_app.py::test_greet
+  /work/app/app.py:81: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+
+tests/test_app.py::test_status
+  /work/app/app.py:49: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    uptime = datetime.datetime.utcnow() - _start_time
+
+tests/test_app.py::test_status
+  /work/app/app.py:60: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform linux, python 3.12.15-final-0 ----------
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+app/__init__.py       0      0   100%
+app/app.py          102     32    69%   94, 104-105, 121, 128, 132-133, 145, 179-209, 225, 230, 234
+-----------------------------------------------
+TOTAL               102     32    69%
+
+======================== 8 passed, 6 warnings in 0.29s =========================
+
+[Pipeline security stages]
+  push:
+  test:
+  sast:
+    name: SAST - CodeQL
+      - name: Initialize CodeQL
+  sca:
+          pip install pip-audit
+          pip-audit
+  secret-scan:
+      - uses: gitleaks/gitleaks-action@v2
+  docker-build:
+  image-scan:
+          trivy image --exit-code 1 --ignore-unfixed --severity HIGH,CRITICAL session17-python:${{ github.sha }}
+  push:
+  deploy:
+
+[Docker build and non-root check]
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 288B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#4 resolve docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 67.85kB done
+#5 DONE 0.0s
+
+#6 [2/6] WORKDIR /app
+#6 CACHED
+
+#7 [3/6] COPY requirements.txt .
+#7 DONE 0.0s
+
+#8 [4/6] RUN pip install -r requirements.txt
+#8 1.392 Collecting Flask==3.1.3 (from -r requirements.txt (line 1))
+#8 1.483   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+#8 1.527 Collecting blinker>=1.9.0 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 1.545   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#8 1.580 Collecting click>=8.1.3 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 1.600   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#8 1.843 Collecting itsdangerous>=2.2.0 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 1.866   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+#8 1.901 Collecting jinja2>=3.1.2 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 1.918   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#8 1.998 Collecting markupsafe>=2.1.1 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 2.016   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.7 kB)
+#8 2.051 Collecting werkzeug>=3.1.0 (from Flask==3.1.3->-r requirements.txt (line 1))
+#8 2.067   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+#8 2.093 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+#8 2.159 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#8 2.178 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#8 2.215 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#8 2.234 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#8 2.262 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (24 kB)
+#8 2.282 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+#8 2.307 Installing collected packages: markupsafe, itsdangerous, click, blinker, werkzeug, jinja2, Flask
+#8 2.619 Successfully installed Flask-3.1.3 blinker-1.9.0 click-8.5.0 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 werkzeug-3.1.9
+#8 2.620 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 2.747 
+#8 2.747 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#8 2.747 [notice] To update, run: pip install --upgrade pip
+#8 DONE 2.8s
+
+#9 [5/6] COPY app ./app
+#9 DONE 0.0s
+
+#10 [6/6] RUN useradd --create-home --uid 10001 appuser && chown -R appuser:appuser /app
+#10 DONE 0.2s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.6s done
+#11 exporting manifest sha256:ac8ae00df1de9cd17f027fc21dff4aa3a532b8af2a4d86631d4da9510e2e644f
+#11 exporting manifest sha256:ac8ae00df1de9cd17f027fc21dff4aa3a532b8af2a4d86631d4da9510e2e644f done
+#11 exporting config sha256:7a03b6152226de2602689b37940cc9a8cd979d3c6aac3ffb592ea8885afd319a done
+#11 exporting attestation manifest sha256:ef6f031d4f5d21681675a43e5b47039db1a00ffa8f3100f2223773ebc14e76f7 done
+#11 exporting manifest list sha256:7946f0dcbbeafebb6f5b50c42ce6b95940ac7a2f650d8a87506e71db601684ea done
+#11 naming to docker.io/library/session17-devsecops:homework done
+#11 unpacking to docker.io/library/session17-devsecops:homework 0.1s done
+#11 DONE 0.8s
+Image=[session17-devsecops:homework] User=10001
+419fc82d4b30f3c05c72245bd96c67288351315fca0c1f0bf10c7ecab4df07ad
+curl: (56) Recv failure: Connection reset by peer
+{"status":"healthy","timestamp":"2026-10-07T09:48:33.340493Z","uptime_seconds":0.93}
+
+{"app":"DevSecOps Dashboard","platform":"Linux","python_version":"3.12.15","status":"running","timestamp":"2026-10-07T09:48:33.359705Z","total_requests":2,"uptime":"00h 00m 00s","version":"2.0.0"}
+
+
+[Kubernetes manifest client validation]
+deployment.apps/session17-python created (dry run)
+service/session17-python created (dry run)

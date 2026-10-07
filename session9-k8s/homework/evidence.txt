@@ -1,0 +1,61 @@
+SESSION 9 - KUBERNETES FUNDAMENTALS
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:07:53 IST
+
+minikube
+Kubernetes control plane is running at https://127.0.0.1:54438
+CoreDNS is running at https://127.0.0.1:54438/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION             CONTAINER-RUNTIME
+minikube   Ready    control-plane   28d   v1.37.0   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   6.12.76-linuxkit (arm64)   containerd://2.3.4
+namespace/homework-s09 created
+deployment.apps/hello-kubernetes created
+service/hello-kubernetes created
+Waiting for deployment "hello-kubernetes" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 of 2 updated replicas are available...
+deployment "hello-kubernetes" successfully rolled out
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/hello-kubernetes   2/2     2            2           11s   web          nginx:1.27-alpine   app=hello-kubernetes
+
+NAME                                          DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES              SELECTOR
+replicaset.apps/hello-kubernetes-5b65b9fb44   2         2         2       11s   web          nginx:1.27-alpine   app=hello-kubernetes,pod-template-hash=5b65b9fb44
+
+NAME                                    READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/hello-kubernetes-5b65b9fb44-h2qm8   1/1     Running   0          11s   10.244.0.33   minikube   <none>           <none>
+pod/hello-kubernetes-5b65b9fb44-r87pt   1/1     Running   0          11s   10.244.0.32   minikube   <none>           <none>
+
+NAME                       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/hello-kubernetes   ClusterIP   10.109.237.82   <none>        80/TCP    11s   app=hello-kubernetes
+deployment.apps/hello-kubernetes scaled
+Waiting for deployment "hello-kubernetes" rollout to finish: 2 of 3 updated replicas are available...
+deployment "hello-kubernetes" successfully rolled out
+deployment.apps/hello-kubernetes image updated
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "hello-kubernetes" rollout to finish: 1 old replicas are pending termination...
+deployment "hello-kubernetes" successfully rolled out
+NAME                                READY   STATUS        RESTARTS   AGE   APP
+hello-kubernetes-5b65b9fb44-h2qm8   1/1     Terminating   0          35s   hello-kubernetes
+hello-kubernetes-646c79cdb9-gmfxz   1/1     Running       0          19s   hello-kubernetes
+hello-kubernetes-646c79cdb9-qvvk8   1/1     Running       0          8s    hello-kubernetes
+hello-kubernetes-646c79cdb9-sj6kh   1/1     Running       0          4s    hello-kubernetes
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/s09-client, falling back to streaming logs: Internal error occurred: Internal error occurred: error attaching to container: container is in CONTAINER_EXITED state
+HTTP/1.1 200 OK
+Server: nginx/1.28.3
+Date: Wed, 07 Oct 2026 09:38:35 GMT
+Content-Type: text/html
+Content-Length: 615
+Found 3 pods, using pod/hello-kubernetes-646c79cdb9-gmfxz
+10.244.0.1 - - [07/Oct/2026:09:38:33 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.37" "-"
+10.244.0.38 - - [07/Oct/2026:09:38:35 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.12.1" "-"
+10.244.0.1 - - [07/Oct/2026:09:38:36 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.37" "-"

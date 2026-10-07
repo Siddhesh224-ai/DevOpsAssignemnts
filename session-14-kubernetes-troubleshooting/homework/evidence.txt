@@ -1,0 +1,59 @@
+SESSION 14 - KUBERNETES TROUBLESHOOTING
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:10:43 IST
+
+[CrashLoopBackOff before]
+pod/crash-demo created
+NAME         READY   STATUS   RESTARTS     AGE
+crash-demo   0/1     Error    1 (7s ago)   8s
+Application starting...
+Something went wrong!
+pod "crash-demo" deleted from homework-s14 namespace
+pod/crash-demo created
+pod/crash-demo condition met
+[CrashLoopBackOff fixed]
+NAME         READY   STATUS    RESTARTS   AGE
+crash-demo   1/1     Running   0          1s
+
+[ImagePullBackOff before/fixed]
+pod/image-demo created
+NAME         READY   STATUS         RESTARTS   AGE
+image-demo   0/1     ErrImagePull   0          5s
+  Warning  Failed     4s    kubelet            spec.containers{app}: Failed to pull image "nginx:this-image-does-not-exist": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/nginx:this-image-does-not-exist": failed to resolve reference "docker.io/library/nginx:this-image-does-not-exist": docker.io/library/nginx:this-image-does-not-exist: not found
+  Warning  Failed     4s    kubelet            spec.containers{app}: Error: ErrImagePull
+  Normal   BackOff    4s    kubelet            spec.containers{app}: Back-off pulling image "nginx:this-image-does-not-exist"
+  Warning  Failed     4s    kubelet            spec.containers{app}: Error: ImagePullBackOff
+pod "image-demo" deleted from homework-s14 namespace
+pod/image-demo created
+pod/image-demo condition met
+NAME         READY   STATUS    RESTARTS   AGE
+image-demo   1/1     Running   0          1s
+
+[Pending before/fixed]
+pod/pending-demo created
+NAME           READY   STATUS    RESTARTS   AGE
+pending-demo   0/1     Pending   0          3s
+LAST SEEN   TYPE      REASON             OBJECT             MESSAGE
+3s          Warning   FailedScheduling   pod/pending-demo   0/1 nodes are available: 1 node(s) didn't match Pod's node affinity/selector. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+pod "pending-demo" deleted from homework-s14 namespace
+pod/pending-demo created
+pod/pending-demo condition met
+NAME           READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pending-demo   1/1     Running   0          1s    10.244.0.108   minikube   <none>           <none>
+
+[Command coverage]
+KIND:       Pod
+VERSION:    v1
+
+FIELD: requests <map[string]Quantity>
+
+
+DESCRIPTION:
+    Requests describes the minimum amount of compute resources required. If
+    Requests is omitted for a container, it defaults to Limits if that is
+    explicitly specified, otherwise to an implementation-defined value. Requests
+    cannot exceed Limits. More info:
+    https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+error: Metrics API not available
+crash-demo
+exec-ok

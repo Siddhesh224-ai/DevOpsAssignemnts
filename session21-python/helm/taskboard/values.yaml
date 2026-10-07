@@ -1,9 +1,11 @@
 frontend:
   image: ghcr.io/YOUR_ORG/taskboard-frontend
   tag: latest
+  pullPolicy: IfNotPresent
 backend:
   image: ghcr.io/YOUR_ORG/taskboard-backend
   tag: latest
+  pullPolicy: IfNotPresent
 replicaCount: 2
 namespace: taskboard
 imagePullSecrets: []

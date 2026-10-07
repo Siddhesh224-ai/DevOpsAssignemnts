@@ -38,7 +38,7 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.main.id
+    gateway_id = aws_internet_gateway.main.id
   }
 
   tags = {
@@ -84,6 +84,53 @@ resource "aws_security_group" "web" {
 
   tags = {
     Name      = "session19-mini-web-sg"
+    Session   = "19"
+    ManagedBy = "Terraform"
+  }
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.*-arm64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+resource "aws_instance" "web" {
+  ami                         = data.aws_ami.amazon_linux.id
+  instance_type               = var.instance_type
+  subnet_id                   = aws_subnet.public.id
+  vpc_security_group_ids      = [aws_security_group.web.id]
+  associate_public_ip_address = true
+
+  user_data = <<-EOT
+    #!/bin/bash
+    dnf install -y nginx
+    echo 'Session 19 Terraform on ${aws_vpc.main.id}' > /usr/share/nginx/html/index.html
+    systemctl enable --now nginx
+  EOT
+
+  tags = {
+    Name      = "session19-mini-web"
+    Session   = "19"
+    ManagedBy = "Terraform"
+  }
+}
+
+resource "aws_s3_bucket" "artifacts" {
+  bucket_prefix = var.bucket_prefix
+  force_destroy = true
+
+  tags = {
+    Name      = "session19-artifacts"
     Session   = "19"
     ManagedBy = "Terraform"
   }

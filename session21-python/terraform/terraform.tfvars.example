@@ -1,0 +1,4 @@
+aws_region   = "ap-south-1"
+cluster_name = "taskboard-eks"
+
+# Keep real AWS credentials outside Terraform files and outside Git.

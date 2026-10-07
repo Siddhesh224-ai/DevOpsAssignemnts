@@ -1,0 +1,129 @@
+SESSION 10 - DEPLOYMENT STRATEGIES AND POD LIFECYCLE
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:08:36 IST
+
+[Rolling update v1 -> v2]
+deployment.apps/app-rolling created
+service/app-rolling-service created
+Waiting for deployment "app-rolling" rollout to finish: 0 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 1 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 3 of 4 updated replicas are available...
+deployment "app-rolling" successfully rolled out
+NAME                           READY   STATUS    RESTARTS   AGE   VERSION
+app-rolling-86d7d44d5b-7mwfb   1/1     Running   0          8s    v1
+app-rolling-86d7d44d5b-jxz49   1/1     Running   0          8s    v1
+app-rolling-86d7d44d5b-m4sbk   1/1     Running   0          8s    v1
+app-rolling-86d7d44d5b-q552q   1/1     Running   0          8s    v1
+deployment.apps/app-rolling configured
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+deployment "app-rolling" successfully rolled out
+deployment.apps/app-rolling 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+
+[Blue-green switch]
+deployment.apps/app-blue created
+deployment.apps/app-green created
+service/myapp-service created
+deployment.apps/app-blue condition met
+deployment.apps/app-green condition met
+NAME                        READY   STATUS    RESTARTS   AGE   SLOT    VERSION
+app-blue-5c69d7785c-slc2x   1/1     Running   0          8s    blue    v1
+app-blue-5c69d7785c-thvr5   1/1     Running   0          8s    blue    v1
+app-blue-5c69d7785c-wj2r4   1/1     Running   0          8s    blue    v1
+app-green-84df7f978-5nfz2   1/1     Running   0          8s    green   v2
+app-green-84df7f978-vd8rr   1/1     Running   0          8s    green   v2
+app-green-84df7f978-wjfx4   1/1     Running   0          8s    green   v2
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME            ENDPOINTS                                      AGE
+myapp-service   10.244.0.47:80,10.244.0.48:80,10.244.0.49:80   8s
+service/myapp-service configured
+NAME            ACTIVE_SLOT
+myapp-service   green
+
+[Canary 9:1 endpoint ratio]
+deployment.apps/app-stable created
+deployment.apps/app-canary created
+service/myapp-canary-service created
+deployment.apps/app-stable condition met
+deployment.apps/app-canary condition met
+NAME                          READY   STATUS    RESTARTS   AGE   TRACK    VERSION
+app-canary-5849994497-c7pxr   1/1     Running   0          8s    canary   v2
+app-stable-6ffb777f9d-2z92h   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-47htp   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-bkkcn   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-fcltn   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-hvjv4   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-lhncj   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-s8rfs   1/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-tqjmf   0/1     Running   0          8s    stable   v1
+app-stable-6ffb777f9d-zt2dj   1/1     Running   0          8s    stable   v1
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                   ENDPOINTS                                                  AGE
+myapp-canary-service   10.244.0.53:80,10.244.0.54:80,10.244.0.55:80 + 6 more...   8s
+
+[Recreate v1 -> v2]
+deployment.apps/app-recreate created
+service/app-recreate-service created
+Waiting for deployment "app-recreate" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-recreate" successfully rolled out
+deployment.apps/app-recreate configured
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-recreate" successfully rolled out
+NAME                                      DESIRED   CURRENT   READY   AGE   VERSION
+replicaset.apps/app-recreate-6c78cb55bb   0         0         0       4s    v1
+replicaset.apps/app-recreate-7bd8d89b8b   3         3         3       1s    v2
+
+NAME                                READY   STATUS    RESTARTS   AGE   VERSION
+pod/app-recreate-7bd8d89b8b-4tddh   1/1     Running   0          1s    v2
+pod/app-recreate-7bd8d89b8b-7bf9k   1/1     Running   0          1s    v2
+pod/app-recreate-7bd8d89b8b-s8pb8   1/1     Running   0          1s    v2
+
+[Pod lifecycle states]
+pod/lifecycle-running created
+pod/lifecycle-pending created
+pod/lifecycle-succeeded created
+pod/lifecycle-failed created
+pod/lifecycle-crashloop created
+pod/lifecycle-image-error created
+lifecycle-crashloop             0/1     Error          1 (9s ago)   12s
+lifecycle-failed                0/1     Error          0            12s
+lifecycle-image-error           0/1     ErrImagePull   0            12s
+lifecycle-pending               0/1     Pending        0            12s
+lifecycle-running               1/1     Running        0            12s
+lifecycle-succeeded             0/1     Completed      0            12s
+Task started
+Task completed successfully
+10s         Warning   Failed              pod/lifecycle-image-error            Error: ImagePullBackOff
+10s         Normal    BackOff             pod/lifecycle-image-error            Back-off pulling image "jakwehrgkaejw:kahsdfgkhj"
+10s         Warning   Failed              pod/lifecycle-image-error            Failed to pull image "jakwehrgkaejw:kahsdfgkhj": failed to pull and unpack image "docker.io/library/jakwehrgkaejw:kahsdfgkhj": failed to resolve reference "docker.io/library/jakwehrgkaejw:kahsdfgkhj": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+9s          Normal    Pulled              pod/lifecycle-crashloop              Container image "busybox:1.36" already present on machine and can be accessed by the pod
+8s          Normal    Started             pod/lifecycle-crashloop              Container started
+8s          Normal    Created             pod/lifecycle-crashloop              Container created
+5s          Warning   FailedScheduling    pod/lifecycle-pending                0/1 nodes are available: 1 Insufficient memory. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+4s          Warning   BackOff             pod/lifecycle-crashloop              Back-off restarting failed container crashing-app in pod lifecycle-crashloop_homework-s10(99b2554e-28da-4a4f-b16e-2080a2f41689)

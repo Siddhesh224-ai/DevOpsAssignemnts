@@ -1,0 +1,63 @@
+SESSION 12 - CONFIGMAP, SECRET, AND INGRESS
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:12:40 IST
+
+configmap/yatri-app-config created
+secret/yatri-db-secret created
+deployment.apps/yatri-backend created
+Waiting for deployment "yatri-backend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-backend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-backend" successfully rolled out
+ENVIRONMENT=production
+POSTGRES_USER=yatri_admin
+deployment.apps/web created
+service/web exposed
+deployment.apps/ingress-nginx-controller condition met
+ingress.networking.k8s.io/yatri-ingress created
+Waiting for deployment "web" rollout to finish: 0 of 1 updated replicas are available...
+deployment "web" successfully rolled out
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      3s
+configmap/yatri-app-config   2      1s
+
+NAME                     TYPE     DATA   AGE
+secret/yatri-db-secret   Opaque   2      1s
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web             1/1     1            1           1s
+deployment.apps/yatri-backend   2/2     2            2           1s
+
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/web   ClusterIP   10.105.223.192   <none>        80/TCP    0s
+
+NAME                                      CLASS   HOSTS         ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/yatri-ingress   nginx   yatri.local             80      0s
+Connecting to web (10.105.223.192:80)
+  HTTP/1.1 200 OK
+  Server: nginx/1.27.5
+  Date: Wed, 07 Oct 2026 09:42:42 GMT
+  Content-Type: text/html
+  Content-Length: 615
+  Last-Modified: Wed, 16 Apr 2025 12:55:34 GMT
+  Connection: close
+
+[Troubleshooting check: selected endpoints]
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME   ENDPOINTS         AGE
+web    10.244.0.123:80   1s
+Name:             yatri-ingress
+Labels:           <none>
+Namespace:        homework-s12
+Address:          
+Ingress Class:    nginx
+Default backend:  <default>
+Rules:
+  Host         Path  Backends
+  ----         ----  --------
+  yatri.local  
+               /   web:80 (10.244.0.123:80)
+Annotations:   <none>
+Events:
+  Type    Reason  Age   From                      Message
+  ----    ------  ----  ----                      -------
+  Normal  Sync    1s    nginx-ingress-controller  Scheduled for sync

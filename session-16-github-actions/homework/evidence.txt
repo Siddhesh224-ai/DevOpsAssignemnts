@@ -1,0 +1,54 @@
+SESSION 16 - LOCAL CI/CD QUALITY GATE
+Host: Siddheshs-MacBook-Pro.local
+Captured: 2026-10-07 15:17:52 IST
+
+[Workflow triggers/jobs/artifact]
+name: Final CI Pipeline
+on:
+  test:
+  build:
+      - name: Upload build artifact
+  security-check:
+
+[Tests]
+Unable to find image 'python:3.12-slim' locally
+3.12-slim: Pulling from library/python
+Digest: sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+Status: Downloaded newer image for python:3.12-slim
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /work
+collecting ... collected 5 items
+
+tests/test_calculator.py::test_add PASSED                                [ 20%]
+tests/test_calculator.py::test_subtract PASSED                           [ 40%]
+tests/test_calculator.py::test_multiply PASSED                           [ 60%]
+tests/test_calculator.py::test_divide PASSED                             [ 80%]
+tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+
+============================== 5 passed in 0.02s ===============================
+
+[Build and artifact]
+=================================
+Starting Application Build
+=================================
+
+Build files:
+total 16
+drwxr-xr-x@  4 sid  staff   128 Oct  7 15:18 .
+drwxr-xr-x@ 11 sid  staff   352 Oct  7 15:18 ..
+-rw-r--r--@  1 sid  staff    98 Oct  7 15:18 build-info.txt
+-rw-r--r--@  1 sid  staff  1488 Oct  7 15:18 calculator.py
+
+Build completed successfully.
+Application: Session 16 Calculator
+Build Status: SUCCESS
+Build Date: Wed Oct  7 15:18:07 IST 2026
+
+[Credential hygiene]
+PASS: no .env, PEM, or key files
